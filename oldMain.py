@@ -20,14 +20,11 @@ passwrd = ''
 
 min_mutual_friends_count = 1
 
-# Coloring the output
 successColor = Fore.GREEN 
 dangerColor = Fore.RED
 infoColor = Fore.WHITE
 actionColor = Fore.BLUE
 
-
-# reading the JSON file and getting the configs
 def getConfigs():
     global nme, passwrd
     try:
@@ -43,7 +40,12 @@ def getConfigs():
         print(dangerColor + "Couldnt read the config file")
         exit()
 
-# Run the program function
+
+
+
+def safityDelay():
+    time.delay(1)
+
 def run():  
 
     getConfigs()
@@ -54,11 +56,6 @@ def run():
     login(driver)
     seeAllFriends(driver)
 
-# safety delay so that we don't get caught as a BOT
-def safityDelay():
-    time.delay(1)
-
-# handle the friend request as we check if the condition is met and if so we send a request
 def handleFriendRequest(friend, mutualFriendsCount, index):
     if(int(mutualFriendsCount) >= min_mutual_friends_count):
         try:
@@ -68,7 +65,6 @@ def handleFriendRequest(friend, mutualFriendsCount, index):
         except:
             print(dangerColor + "Couldnt add this friend")
 
-# find the number of the mutual friends
 def findMutualFriends(friend):
     res = findElems(friend, By.CLASS_NAME,"xuxw1ft")
     for elem in res:
@@ -76,7 +72,6 @@ def findMutualFriends(friend):
             return (elem.get_attribute("innerHTML").split(" "))[0]
     return -1
 
-# deal with each frined in the friend list
 def handleFriend(friend, count):
         try:
             name = findElem(friend, By.CLASS_NAME,"xuxw1ft").get_attribute("innerHTML")
@@ -91,7 +86,6 @@ def handleFriend(friend, count):
         except:
             pass
 
-# get all friends in the suggestion list
 def seeAllFriends(driver):
     friendsContainer = findElem(driver, By.CLASS_NAME,"x8gbvx8")
     allFriends = findElems(friendsContainer, By.XPATH, "*")
@@ -102,7 +96,7 @@ def seeAllFriends(driver):
         handleFriend(friend, count)
         count += 1
 
-# the normal find elements but wrapped around try and except block
+    
 def findElems(source, by, q):
     try:
         return source.find_elements(by, q)
@@ -110,7 +104,6 @@ def findElems(source, by, q):
         print(dangerColor + "Couldnt find the elements.")
         exit()
 
-# the normal find element but wrapped around try and except block
 def findElem(source, by, q):
     try:
         return source.find_element(by, q)
@@ -118,7 +111,6 @@ def findElem(source, by, q):
         print(dangerColor + "Couldnt find the element "+ q)
         exit()
 
-# login function
 def login(driver):
     try:
         if driver:
@@ -141,7 +133,5 @@ def login(driver):
             
     except:
         print(dangerColor + "Couldnt login")
-
-
 
 run()
